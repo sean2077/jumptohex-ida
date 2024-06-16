@@ -18,6 +18,8 @@ PLUGIN_NAME = "Jump to Hex View"
 PLUGIN_HOTKEY = "Ctrl+Shift+J"
 VERSION = "1.0.0"
 
+ACTION_PREFIX = "sean2077"
+
 import ida_kernwin
 import idaapi
 import idc
@@ -65,7 +67,7 @@ class JumpToHex(idaapi.plugin_t):
         self._hooks = Hooks()
         self._hooks.hook()
 
-    ACTION_JUMP_TO_HEX = "prefix:jump_to_hex"
+    ACTION_JUMP_TO_HEX = f"{ACTION_PREFIX}:jump_to_hex"
 
     def _init_action_jump_to_hex(self):
         action_desc = idaapi.action_desc_t(
