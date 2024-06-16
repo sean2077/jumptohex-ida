@@ -24,16 +24,18 @@ import idc
 
 
 def jump_to_hex_view(address):
+    print(f"Jumping to Hex View at address: {address:#x}")
+
     # Check if Hex View is open
-    hex_view = idaapi.find_widget("Hex view-1")
+    hex_view = idaapi.find_widget("Hex View-1")
     if hex_view is None:
         idaapi.refresh_idaview_anyway()
-        ida_kernwin.process_ui_action("ViewSubwindow1")
+        ida_kernwin.process_ui_action("ToggleDump")
         hex_view = idaapi.find_widget("Hex View-1")
 
     if hex_view:
-        idaapi.jumpto(address)
         ida_kernwin.activate_widget(hex_view, True)
+        ida_kernwin.jumpto(address)
     else:
         idaapi.warning("Failed to open Hex view, please open it manually from the View menu.")
 
@@ -91,7 +93,7 @@ class Hooks(idaapi.UI_Hooks):
 
 
 def inject_jump_to_hex_actions(form, popup, form_type):
-    if form_type == idaapi.BWN_DISASMS:
+    if form_type == idaapi.BWN_DISASM:
         idaapi.attach_action_to_popup(form, popup, JumpToHex.ACTION_JUMP_TO_HEX, "Jump to Hex", idaapi.SETMENU_APP)
     return 0
 
